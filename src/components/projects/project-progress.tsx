@@ -1,17 +1,16 @@
 import type { ProjectMilestone, ProjectStatus } from "@/lib/site";
+import { StatusLegend } from "@/components/ui/status-legend";
 
 const statusSymbols: Record<ProjectStatus, string> = {
   completed: "✓",
   "in-progress": "◐",
   planned: "○",
-  unknown: "?",
 };
 
 const statusLabels: Record<ProjectStatus, string> = {
-  completed: "Completed",
-  "in-progress": "In progress",
-  planned: "Planned",
-  unknown: "Needs confirmation",
+  completed: "COMPLETED",
+  "in-progress": "IN PROGRESS",
+  planned: "PLANNED",
 };
 
 export function ProjectProgress({
@@ -32,6 +31,7 @@ export function ProjectProgress({
           {progress === null ? "?" : `${progress}%`}
         </span>
       </div>
+      <StatusLegend />
       <div
         className="progress-track"
         aria-label={

@@ -202,17 +202,7 @@ function ProjectDetails({ project }: { project: Project }) {
       )}
       <div className="detail-column">
         <span className="detail-label">04 / Key features</span>
-        <ul>
-          {project.features.map((feature) => (
-            <li key={feature.name}>
-              <span
-                className={`status-mark status-${feature.status}`}
-                aria-label={feature.status}
-              />
-              {feature.name}
-            </li>
-          ))}
-        </ul>
+        <FeatureGroups features={project.features} />
       </div>
       <div className="detail-column">
         <span className="detail-label">05 / Challenges</span>
@@ -230,6 +220,37 @@ function ProjectDetails({ project }: { project: Project }) {
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+function FeatureGroups({ features }: { features: Project["features"] }) {
+  return (
+    <div className="feature-groups">
+      {(["completed", "in-progress", "planned"] as const).map((status) => {
+        const matching = features.filter(
+          (feature) => feature.status === status,
+        );
+        if (!matching.length) return null;
+        return (
+          <div className="feature-group" key={status}>
+            <span className="feature-group-label">
+              {status.replace("-", " ").toUpperCase()}
+            </span>
+            <ul>
+              {matching.map((feature) => (
+                <li key={feature.name}>
+                  <span
+                    className={`status-mark status-${feature.status}`}
+                    aria-hidden="true"
+                  />
+                  {feature.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
     </div>
   );
 }

@@ -11,7 +11,6 @@ const statusSymbols = {
   completed: "✓",
   "in-progress": "◐",
   planned: "○",
-  unknown: "?",
 } as const;
 
 export function ProjectDetail({ project }: { project: Project }) {
@@ -120,7 +119,9 @@ export function ProjectDetail({ project }: { project: Project }) {
                         {statusSymbols[feature.status]}
                       </span>
                       <span>{feature.name}</span>
-                      <small>{feature.status.replace("-", " ")}</small>
+                      <small>
+                        {feature.status.replace("-", " ").toUpperCase()}
+                      </small>
                     </div>
                   ))}
                 </div>

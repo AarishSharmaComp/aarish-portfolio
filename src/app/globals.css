@@ -1054,6 +1054,27 @@ button {
 .status-unknown {
   background: #788590;
 }
+.feature-groups {
+  display: grid;
+  gap: 17px;
+}
+.feature-group-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font:
+    9px "Space Mono",
+    monospace;
+  letter-spacing: 0.06em;
+}
+.feature-group ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 
 /* Skills */
 .skills-section {

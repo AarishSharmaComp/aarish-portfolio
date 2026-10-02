@@ -4,8 +4,6 @@ import { FormEvent, useState } from "react";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
-const endpoint = process.env.NEXT_PUBLIC_CONTACT_FORM_ENDPOINT;
-
 export function ContactForm() {
   const [state, setState] = useState<FormState>("idle");
   const [feedback, setFeedback] = useState("");
@@ -30,32 +28,34 @@ export function ContactForm() {
       return;
     }
 
-    if (!endpoint) {
-      setState("error");
-      setFeedback(
-        "Form delivery is not configured yet. Please use the email link on the left.",
-      );
-      return;
-    }
-
     setState("submitting");
     setFeedback("");
 
     try {
-      const response = await fetch(endpoint, {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+          website: String(data.get("website") ?? ""),
+        }),
       });
 
-      if (!response.ok) throw new Error("Request failed");
+      const result = (await response.json()) as { error?: string };
+      if (!response.ok) throw new Error(result.error || "Request failed");
 
       form.reset();
       setState("success");
       setFeedback("Message sent. Thanks for reaching out.");
-    } catch {
+    } catch (error) {
       setState("error");
-      setFeedback("Something went wrong. Please email me directly instead.");
+      setFeedback(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please email me directly instead.",
+      );
     }
   }
 
@@ -94,6 +94,16 @@ export function ContactForm() {
           name="message"
           placeholder="Hi Aarish, I'd love to discuss..."
           required
+        />
+      </div>
+      <div className="contact-honeypot" aria-hidden="true">
+        <label htmlFor="contact-website">Website</label>
+        <input
+          id="contact-website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
         />
       </div>
       <button

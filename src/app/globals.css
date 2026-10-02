@@ -1818,6 +1818,14 @@ button {
 .form-feedback-error {
   color: #ff9f9f;
 }
+.contact-honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
 @media (max-width: 900px) {
   .contact-layout {
     grid-template-columns: 1fr 1fr;
